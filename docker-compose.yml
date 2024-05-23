@@ -1,11 +1,11 @@
-version: '3.3'
+version: "3.3"
 
 services:
   postgres:
     image: postgres:13
     environment:
       - POSTGRES_DB=my_store
-      - POSTGRES_USER=nico
+      - POSTGRES_USER=laure
       - POSTGRES_PASSWORD=admin123
     ports:
       - 5432:5432
@@ -19,5 +19,3 @@ services:
       - PGADMIN_DEFAULT_PASSWORD=root
     ports:
       - 5050:80
-
-
