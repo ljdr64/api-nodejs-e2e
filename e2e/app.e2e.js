@@ -1,18 +1,15 @@
 const request = require('supertest');
 const express = require('express');
 
+const createApp = require('./../src/app');
+
 describe('tests for app', () => {
   let app = null;
   let server = null;
   let api = null;
 
   beforeEach(() => {
-    app = express();
-
-    app.get('/hello', (req, res) => {
-      res.status(200).json({ name: 'laure' });
-    });
-
+    app = createApp();
     server = app.listen(9000);
     api = request(app);
   });
