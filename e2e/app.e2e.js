@@ -1,21 +1,31 @@
 const request = require('supertest');
 const express = require('express');
 
-const app = express();
-
-app.get('/hello', (req, res) => {
-  res.status(201).json({ name: 'laure' });
-});
-
-app.listen(9000);
-const api = request(app);
-
 describe('tests for app', () => {
+  let app = null;
+  let server = null;
+  let api = null;
+
+  beforeEach(() => {
+    app = express();
+
+    app.get('/hello', (req, res) => {
+      res.status(200).json({ name: 'laure' });
+    });
+
+    server = app.listen(9000);
+    api = request(app);
+  });
+
   test('GET /hello', async () => {
     const response = await api.get('/hello');
     expect(response).toBeTruthy();
     expect(response.statusCode).toEqual(200);
     expect(response.body.name).toEqual('laure');
     expect(response.headers['content-type']).toMatch(/json/);
+  });
+
+  afterEach(() => {
+    server.close();
   });
 });
