@@ -1,6 +1,4 @@
 const request = require('supertest');
-const express = require('express');
-
 const createApp = require('./../src/app');
 
 describe('tests for app', () => {
