@@ -7,7 +7,7 @@ describe('tests for /users path', () => {
   let server = null;
   let api = null;
 
-  beforeEach(() => {
+  beforeAll(() => {
     app = createApp();
     server = app.listen(9000);
     api = request(app);
@@ -25,11 +25,11 @@ describe('tests for /users path', () => {
 
   describe('POST /users', () => {
     test('should return a 400 Bad request with password invalid', async () => {
-      const inputData = `
+      const inputData = JSON.parse(`
         {
           "email": "laure@mail.com",
           "password": "-----"
-        }`;
+        }`);
       const { statusCode, body } = await api
         .post('/api/v1/users')
         .send(inputData);
@@ -55,7 +55,7 @@ describe('tests for /users path', () => {
     // test for /users
   });
 
-  afterEach(() => {
+  afterAll(() => {
     server.close();
   });
 });

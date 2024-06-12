@@ -8,7 +8,6 @@ const UserService = require('./user.service');
 const service = new UserService();
 
 class AuthService {
-
   async getUser(email, password) {
     const user = await service.findByEmail(email);
     if (!user) {
@@ -16,7 +15,7 @@ class AuthService {
     }
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      throw boom.unauthorized();;
+      throw boom.unauthorized();
     }
     delete user.dataValues.password;
     return user;
@@ -25,12 +24,12 @@ class AuthService {
   signToken(user) {
     const payload = {
       sub: user.id,
-      role: user.role
-    }
+      role: user.role,
+    };
     const access_token = jwt.sign(payload, config.jwtSecret);
     return {
       user,
-      access_token
+      access_token,
     };
   }
 
@@ -40,15 +39,15 @@ class AuthService {
       throw boom.unauthorized();
     }
     const payload = { sub: user.id };
-    const token = jwt.sign(payload, config.jwtSecret, {expiresIn: '15min'});
+    const token = jwt.sign(payload, config.jwtSecret, { expiresIn: '15min' });
     const link = `http://myfrontend.com/recovery?token=${token}`;
-    await service.update(user.id, {recoveryToken: token});
+    await service.update(user.id, { recoveryToken: token });
     const mail = {
       from: config.smtpEmail,
       to: `${user.email}`,
-      subject: "Email para recuperar contraseña",
+      subject: 'Email para recuperar contraseña',
       html: `<b>Ingresa a este link => ${link}</b>`,
-    }
+    };
     const rta = await this.sendMail(mail);
     return rta;
   }
@@ -61,7 +60,7 @@ class AuthService {
         throw boom.unauthorized();
       }
       const hash = await bcrypt.hash(newPassword, 10);
-      await service.update(user.id, {recoveryToken: null, password: hash});
+      await service.update(user.id, { recoveryToken: null, password: hash });
       return { message: 'password changed' };
     } catch (error) {
       throw boom.unauthorized();
@@ -70,13 +69,13 @@ class AuthService {
 
   async sendMail(infoMail) {
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
+      host: 'smtp.gmail.com',
       secure: true,
       port: 465,
       auth: {
         user: config.smtpEmail,
-        pass: config.smtpPassword
-      }
+        pass: config.smtpPassword,
+      },
     });
     await transporter.sendMail(infoMail);
     return { message: 'mail sent' };
