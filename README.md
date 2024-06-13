@@ -4,7 +4,6 @@
 npm install
 ```
 
-
 # Migrations
 
 ```sh
@@ -27,7 +26,7 @@ npm run start
 
 ```sh
 docker-compose exec postgres bash
-psql -h localhost -d my_store -U nico
+psql -h localhost -d my_store -U laure
 \d+
 SELECT * FROM users;
 DELETE FROM users WHERE id=<id>;
