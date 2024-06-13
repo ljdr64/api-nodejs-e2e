@@ -38,11 +38,11 @@ describe('tests for /users path', () => {
     });
 
     test('should return a 400 Bad request with email invalid', async () => {
-      const inputData = `
+      const inputData = JSON.parse(`
         {
           "email": "----",
           "password": "admin123"
-        }`;
+        }`);
       const { statusCode, body } = await api
         .post('/api/v1/users')
         .send(inputData);
